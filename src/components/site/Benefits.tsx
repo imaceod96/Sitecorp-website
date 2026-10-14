@@ -115,7 +115,9 @@ function CentralizedVisual() {
         <p className="text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
           Escala B
         </p>
-        <p className="mt-1 text-xs font-bold text-ink">46.000 € – 74.000 €</p>
+        <p className="mt-1 font-mono text-xs font-bold text-ink">
+                  46.000 € – 74.000 €
+                </p>
         <div className="relative mt-2 h-2.5 w-full rounded-full bg-surface-mist">
           <div className="absolute inset-y-0 left-[35%] w-[45%] rounded-full bg-brand-500" />
         </div>

@@ -61,7 +61,7 @@ function UnitCard({
 export function OrgChartMockup() {
   return (
     <AppFrame url="app.sitecorp.com/estructura/organigrama">
-      <div className="flex bg-[#FAFBFE]">
+      <div className="flex bg-surface-mist">
         <MockSidebar items={NAV_ITEMS} activeIndex={1} />
 
         <div className="min-w-0 flex-1">

@@ -80,9 +80,13 @@ export function FinalCta() {
           <div className="grid gap-10 p-7 sm:p-10 lg:grid-cols-2 lg:gap-16 lg:p-14">
             <div>
               <span className="text-eyebrow border-white/20 bg-white/10 text-brand-100">
-                Solicita una demo
-              </span>
-              <h2 className="mt-5 text-3xl font-bold leading-tight text-white sm:text-4xl">
+                              <span
+                                className="h-1.5 w-1.5 rounded-full bg-accent-400"
+                                aria-hidden
+                              />
+                              Solicita una demo
+                            </span>
+                            <h2 className="mt-5 text-[1.75rem] font-bold leading-tight text-white sm:text-[2rem]">
                 ¿Quieres ver Sitecorp en acción?
               </h2>
               <p className="mt-4 text-base leading-relaxed text-brand-100">
@@ -97,9 +101,9 @@ export function FinalCta() {
                     className="flex items-start gap-3 text-sm font-medium text-white"
                   >
                     <CheckCircle2
-                      className="mt-0.5 h-4 w-4 shrink-0 text-brand-200"
-                      aria-hidden
-                    />
+                                          className="mt-0.5 h-4 w-4 shrink-0 text-accent-300"
+                                          aria-hidden
+                                        />
                     {item}
                   </li>
                 ))}

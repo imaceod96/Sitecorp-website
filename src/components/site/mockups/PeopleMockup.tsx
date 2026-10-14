@@ -33,7 +33,7 @@ const ROWS = [
 export function PeopleMockup() {
   return (
     <AppFrame url="app.sitecorp.com/trabajadores">
-      <div className="flex bg-[#FAFBFE]">
+      <div className="flex bg-surface-mist">
         <MockSidebar items={NAV_ITEMS} activeIndex={2} />
 
         <div className="min-w-0 flex-1">

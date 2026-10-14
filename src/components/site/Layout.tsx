@@ -66,21 +66,28 @@ export function SectionHeading({
       )}
     >
       {eyebrow ? (
-        <span
-          className={cn(
-            "text-eyebrow",
-            tone === "light" && "border-white/20 bg-white/10 text-brand-100",
-          )}
-        >
-          {eyebrow}
-        </span>
-      ) : null}
-      <h2
-        className={cn(
-          "max-w-3xl text-3xl font-bold leading-[1.12] sm:text-4xl lg:text-[2.75rem]",
-          tone === "light" ? "text-white" : "text-ink",
-        )}
-      >
+              <span
+                className={cn(
+                  "text-eyebrow",
+                  tone === "light" && "border-white/20 bg-white/10 text-brand-100",
+                )}
+              >
+                <span
+                  className={cn(
+                    "h-1.5 w-1.5 rounded-full",
+                    tone === "light" ? "bg-accent-400" : "bg-accent-500",
+                  )}
+                  aria-hidden
+                />
+                {eyebrow}
+              </span>
+            ) : null}
+            <h2
+              className={cn(
+                "max-w-3xl text-2xl font-bold leading-[1.18] sm:text-[1.75rem] lg:text-[2rem]",
+                tone === "light" ? "text-white" : "text-ink",
+              )}
+            >
         {title}
       </h2>
       {description ? (

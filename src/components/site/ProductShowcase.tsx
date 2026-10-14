@@ -79,7 +79,7 @@ function ShowcaseRow({ item, index }: { item: ShowcaseItem; index: number }) {
           <span className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">
             {item.eyebrow}
           </span>
-          <h3 className="mt-3 text-2xl font-bold leading-snug text-ink sm:text-3xl">
+          <h3 className="mt-3 text-xl font-bold leading-snug text-ink sm:text-2xl lg:text-[1.75rem]">
             {item.title}
           </h3>
           <p className="mt-4 text-base leading-relaxed text-ink-muted">

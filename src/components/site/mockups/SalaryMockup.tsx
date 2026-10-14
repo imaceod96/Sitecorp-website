@@ -37,7 +37,7 @@ const SCALES = [
 export function SalaryMockup() {
   return (
     <AppFrame url="app.sitecorp.com/escalas">
-      <div className="flex bg-[#FAFBFE]">
+      <div className="flex bg-surface-mist">
         <MockSidebar items={NAV_ITEMS} activeIndex={5} />
 
         <div className="min-w-0 flex-1">
@@ -63,12 +63,12 @@ export function SalaryMockup() {
 
             <div className="rounded-xl border border-surface-line bg-white p-3 sm:p-4">
               <div className="mb-3 flex items-center justify-between">
-                <span className="rounded-md bg-brand-50 px-2.5 py-1 text-[10px] font-semibold text-brand-600">
-                  Convenio general
-                </span>
-                <span className="text-[9px] font-medium text-ink-muted">
-                  Referencia: 100 %
-                </span>
+                <span className="rounded-md bg-accent-50 px-2.5 py-1 text-[10px] font-semibold text-accent-700">
+                                  Convenio general
+                                </span>
+                                <span className="font-mono text-[9px] font-medium text-ink-muted">
+                                  Referencia: 100 %
+                                </span>
               </div>
 
               <div className="space-y-3">
@@ -78,9 +78,9 @@ export function SalaryMockup() {
                       <span className="truncate text-[10px] font-semibold text-ink">
                         {scale.level}
                       </span>
-                      <span className="hidden text-[9px] font-medium text-ink-muted sm:block">
-                        {scale.min} – {scale.max}
-                      </span>
+                      <span className="hidden font-mono text-[9px] font-medium text-ink-muted sm:block">
+                                              {scale.min} – {scale.max}
+                                            </span>
                     </div>
                     <div className="relative h-3 w-full rounded-full bg-surface-mist">
                       <div

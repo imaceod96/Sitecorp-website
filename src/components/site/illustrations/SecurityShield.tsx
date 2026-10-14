@@ -1,5 +1,8 @@
 import { cn } from "@/lib/utils";
 
+const BRAND_500 = "#1A5F7A";
+const BRAND_300 = "#8CBAD0";
+
 /** Decorative hierarchical-access shield illustration. */
 export function SecurityShield({ className }: { className?: string }) {
   return (
@@ -32,10 +35,10 @@ export function SecurityShield({ className }: { className?: string }) {
         strokeLinecap="round"
         opacity="0.9"
       />
-      <circle cx="160" cy="189" r="5" fill="#1B4FD8" />
+      <circle cx="160" cy="189" r="5" fill={BRAND_500} />
 
       {/* role nodes */}
-      <circle cx="160" cy="106" r="14" fill="#8FAEFC" />
+      <circle cx="160" cy="106" r="14" fill={BRAND_300} />
       <path
         d="M160 120 V134 M96 134 H224 M96 134 V146 M160 134 V146 M224 134 V146"
         stroke="rgba(255,255,255,0.4)"

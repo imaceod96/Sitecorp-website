@@ -67,8 +67,8 @@ export function Features() {
       <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((feature, index) => (
           <Reveal key={feature.title} delay={index * 80}>
-            <article className="group h-full rounded-2xl border border-surface-line bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-card">
-              <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+            <article className="group h-full rounded-2xl border border-surface-line bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-accent-200 hover:shadow-card">
+                          <span className="grid h-12 w-12 place-items-center rounded-xl bg-accent-50 text-accent-600 transition-colors group-hover:bg-accent-500 group-hover:text-white">
                 <feature.icon className="h-5 w-5" aria-hidden />
               </span>
               <h3 className="mt-5 text-lg font-bold text-ink">

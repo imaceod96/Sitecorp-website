@@ -33,15 +33,19 @@ export function Hero() {
       <Container className="relative z-10">
         <div className="flex flex-col items-center text-center">
           <span
-            className="text-eyebrow animate-fade-up"
-            style={{ animationDelay: "40ms" }}
-          >
-            Plataforma de RR. HH. y organización
-          </span>
+                      className="text-eyebrow animate-fade-up"
+                      style={{ animationDelay: "40ms" }}
+                    >
+                      <span
+                        className="h-1.5 w-1.5 rounded-full bg-accent-500"
+                        aria-hidden
+                      />
+                      Plataforma de RR. HH. y organización
+                    </span>
 
           <h1
-            className="mt-6 max-w-4xl text-balance text-4xl font-extrabold leading-[1.08] text-ink animate-fade-up sm:text-5xl lg:text-6xl"
-            style={{ animationDelay: "120ms" }}
+            className="mt-6 max-w-4xl text-balance text-[2rem] font-extrabold leading-[1.12] text-ink animate-fade-up sm:text-[2.5rem] lg:text-[3rem]"
+                        style={{ animationDelay: "120ms" }}
           >
             Toda tu organización.{" "}
             <span className="text-brand-500">Una sola plataforma.</span>
@@ -87,7 +91,7 @@ export function Hero() {
                 key={item.label}
                 className="flex items-center gap-2 text-sm font-semibold text-ink-soft"
               >
-                <item.icon className="h-4 w-4 text-brand-500" aria-hidden />
+                <item.icon className="h-4 w-4 text-accent-500" aria-hidden />
                 {item.label}
               </li>
             ))}

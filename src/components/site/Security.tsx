@@ -67,9 +67,9 @@ export function Security() {
             {POINTS.map((point, index) => (
               <Reveal key={point.title} delay={index * 80}>
                 <div className="h-full rounded-2xl border border-white/15 bg-white/5 p-5 backdrop-blur-sm">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-brand-100">
-                    <point.icon className="h-5 w-5" aria-hidden />
-                  </span>
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-accent-300">
+                                      <point.icon className="h-5 w-5" aria-hidden />
+                                    </span>
                   <h3 className="mt-4 text-base font-bold text-white">
                     {point.title}
                   </h3>

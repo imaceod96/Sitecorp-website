@@ -34,7 +34,7 @@ const PLAN = [
 export function PlanningMockup() {
   return (
     <AppFrame url="app.sitecorp.com/plantillas">
-      <div className="flex bg-[#FAFBFE]">
+      <div className="flex bg-surface-mist">
         <MockSidebar items={NAV_ITEMS} activeIndex={4} />
 
         <div className="min-w-0 flex-1">
@@ -85,15 +85,15 @@ export function PlanningMockup() {
                     <p className="text-[9px] font-medium uppercase tracking-wide text-ink-muted">
                       Plantilla actual
                     </p>
-                    <p className="font-display text-lg font-bold text-ink">282</p>
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-medium uppercase tracking-wide text-ink-muted">
-                      Prevista
-                    </p>
-                    <p className="font-display text-lg font-bold text-brand-600">
-                      346
-                    </p>
+                    <p className="font-mono text-lg font-bold text-ink">282</p>
+                                      </div>
+                                      <div>
+                                        <p className="text-[9px] font-medium uppercase tracking-wide text-ink-muted">
+                                          Prevista
+                                        </p>
+                                        <p className="font-mono text-lg font-bold text-accent-600">
+                                          346
+                                        </p>
                   </div>
                 </div>
                 <div className="hidden gap-3 sm:flex">
@@ -101,8 +101,9 @@ export function PlanningMockup() {
                     <span className="h-2 w-2 rounded-full bg-brand-200" /> Actual
                   </span>
                   <span className="flex items-center gap-1.5 text-[9px] font-medium text-ink-muted">
-                    <span className="h-2 w-2 rounded-full bg-brand-500" /> Previsto
-                  </span>
+                                      <span className="h-2 w-2 rounded-full bg-accent-500" />{" "}
+                                      Previsto
+                                    </span>
                 </div>
               </div>
 
@@ -118,9 +119,9 @@ export function PlanningMockup() {
                         style={{ height: `${item.current}%` }}
                       />
                       <div
-                        className="w-3 rounded-t-md bg-brand-500 sm:w-4"
-                        style={{ height: `${item.future}%` }}
-                      />
+                                              className="w-3 rounded-t-md bg-accent-500 sm:w-4"
+                                              style={{ height: `${item.future}%` }}
+                                            />
                     </div>
                   </div>
                 ))}

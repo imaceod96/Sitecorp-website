@@ -72,7 +72,7 @@ function MatrixCell({ value }: { value: string }) {
 export function PermissionsMockup() {
   return (
     <AppFrame url="app.sitecorp.com/permisos">
-      <div className="flex bg-[#FAFBFE]">
+      <div className="flex bg-surface-mist">
         <MockSidebar items={NAV_ITEMS} activeIndex={6} />
 
         <div className="min-w-0 flex-1">

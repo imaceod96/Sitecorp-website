@@ -24,7 +24,7 @@ export function AppFrame({
         <span className="h-2.5 w-2.5 rounded-full bg-rose-300" aria-hidden />
         <span className="h-2.5 w-2.5 rounded-full bg-amber-300" aria-hidden />
         <span className="h-2.5 w-2.5 rounded-full bg-emerald-300" aria-hidden />
-        <div className="mx-auto hidden max-w-[260px] flex-1 items-center justify-center gap-1.5 rounded-md bg-white px-3 py-1 text-[11px] font-medium text-ink-muted ring-1 ring-surface-line sm:flex">
+        <div className="mx-auto hidden max-w-[260px] flex-1 items-center justify-center gap-1.5 rounded-md bg-white px-3 py-1 font-mono text-[11px] font-medium text-ink-muted ring-1 ring-surface-line sm:flex">
           <Lock className="h-3 w-3 shrink-0" aria-hidden />
           <span className="truncate">{url}</span>
         </div>

@@ -4,33 +4,43 @@
 
 @layer base {
   :root {
+    /* Design tokens — official Sitecorp brand identity */
+    --brand-primary: #1a5f7a;
+    --brand-secondary: #f49d37;
+    --brand-bg-light: #f8f9fa;
+    --brand-text: #2c3e50;
+    --brand-bg-dark: #121212;
+    --brand-border-light: #d1d5db;
+    --brand-white: #ffffff;
+
+    /* shadcn tokens mapped onto the brand palette */
     --background: 0 0% 100%;
-    --foreground: 222 60% 13%;
+    --foreground: 210 27% 24%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 60% 13%;
+    --card-foreground: 210 27% 24%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 60% 13%;
+    --popover-foreground: 210 27% 24%;
 
-    --primary: 224 78% 48%;
+    --primary: 197 65% 29%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 224 100% 97%;
-    --secondary-foreground: 222 60% 20%;
+    --secondary: 197 45% 95%;
+    --secondary-foreground: 197 65% 25%;
 
-    --muted: 220 40% 96%;
-    --muted-foreground: 220 12% 44%;
+    --muted: 210 17% 96%;
+    --muted-foreground: 210 15% 42%;
 
-    --accent: 224 100% 96%;
-    --accent-foreground: 222 60% 20%;
+    --accent: 197 45% 95%;
+        --accent-foreground: 197 65% 25%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 218 32% 91%;
-    --input: 218 32% 91%;
-    --ring: 224 78% 48%;
+    --border: 216 12% 84%;
+    --input: 216 12% 84%;
+    --ring: 197 65% 29%;
 
     --radius: 0.85rem;
   }
@@ -46,31 +56,35 @@
 
   body {
     @apply bg-background font-sans text-foreground antialiased;
+    /* Official body line-height */
+    line-height: 1.7;
     text-rendering: optimizeLegibility;
   }
 
+  /* Montserrat for headings and display text */
   h1,
   h2,
   h3,
-  h4 {
+  h4,
+  h5 {
     @apply font-display tracking-tight text-ink;
   }
 
   ::selection {
-      background-color: #BACCFE;
-      color: #132456;
-    }
+    background-color: #b9d7e3;
+    color: #0b2b39;
+  }
 
   section[id] {
-      scroll-margin-top: 92px;
-    }
+    scroll-margin-top: 92px;
   }
+}
 
 @layer components {
   .bg-grid {
     background-image:
-      linear-gradient(to right, rgba(27, 79, 216, 0.07) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(27, 79, 216, 0.07) 1px, transparent 1px);
+      linear-gradient(to right, rgba(26, 95, 122, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(26, 95, 122, 0.08) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 
@@ -88,7 +102,12 @@
   }
 
   .text-eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-brand-600;
+    @apply inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-3 py-1 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-brand-600;
+  }
+
+  /* Technical content only */
+  .text-technical {
+    @apply font-mono text-[0.8125rem] tracking-tight text-ink-soft;
   }
 }
 

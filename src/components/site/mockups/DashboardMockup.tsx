@@ -54,7 +54,7 @@ function OrgNode({ title, subtitle }: { title: string; subtitle: string }) {
 export function DashboardMockup() {
   return (
     <AppFrame url="app.sitecorp.com/estructura">
-      <div className="flex bg-[#FAFBFE]">
+      <div className="flex bg-surface-mist">
         <MockSidebar items={NAV_ITEMS} activeIndex={1} />
 
         <div className="min-w-0 flex-1">
@@ -65,7 +65,13 @@ export function DashboardMockup() {
                 Buscar personas, puestos o unidades…
               </span>
             </div>
-            <Bell className="hidden h-4 w-4 text-ink-muted sm:block" aria-hidden />
+            <span className="relative hidden sm:block">
+                          <Bell className="h-4 w-4 text-ink-muted" aria-hidden />
+                          <span
+                            className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-accent-500 ring-2 ring-white"
+                            aria-hidden
+                          />
+                        </span>
             <div className="flex items-center gap-2">
               <InitialsAvatar name="Ana Ruiz" className="h-6 w-6" />
               <span className="hidden text-[11px] font-semibold text-ink-soft sm:block">
