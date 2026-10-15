@@ -9,8 +9,8 @@ interface LogoProps {
 
 /** Official Sitecorp assets, served from /public/brand/. */
 const LOGO_SRC = {
-  dark: "/brand/sitecorp-logo.svg",
-  light: "/brand/sitecorp-logo-contraste.png",
+  dark: "/brand/logo-sitecorp-full.png",
+  light: "/brand/logo-sitecorp-full.png",
 } as const;
 
 /**
