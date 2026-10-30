@@ -25,52 +25,64 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-        display: ["Montserrat", "Inter", "ui-sans-serif", "sans-serif"],
+        display: ['"Plus Jakarta Sans"', '"Manrope"', "Inter", "sans-serif"],
         mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
       },
       colors: {
-        /* Primary brand blue — #1A5F7A */
+        /* Primary brand deep blue — #123F55 */
         brand: {
-          50: "#F1F7FA",
-          100: "#DCECF2",
-          200: "#B9D7E3",
-          300: "#8CBAD0",
-          400: "#4F92AF",
-          500: "#1A5F7A",
-          600: "#154E64",
-          700: "#113F52",
-          800: "#0E3444",
-          900: "#0B2B39",
+          50: "#F0F6F9",
+          100: "#DCEAF1",
+          200: "#B8D6E3",
+          300: "#85B9D0",
+          400: "#4692B4",
+          500: "#123F55",
+          600: "#0F3447",
+          700: "#0C2A3A",
+          800: "#09212E",
+          900: "#061720",
         },
-        /* Secondary brand orange — #F49D37 (also backs shadcn's `accent` states) */
+        /* Secondary brand teal — #1A7B91 */
+        teal: {
+          50: "#F0F9FB",
+          100: "#D6F0F5",
+          200: "#AEE1EC",
+          300: "#75CBDE",
+          400: "#38ACCA",
+          500: "#1A7B91",
+          600: "#166477",
+          700: "#145160",
+          800: "#12434F",
+          900: "#0F3640",
+        },
+        /* Accent brand amber — #F49D37 */
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
-          50: "#FEF5E9",
-          100: "#FDE8CE",
-          200: "#FBD29E",
-          300: "#F8BC6E",
-          400: "#F6AB4E",
+          50: "#FEF8F0",
+          100: "#FDEEDC",
+          200: "#FBDEB9",
+          300: "#F8C88B",
+          400: "#F5B05A",
           500: "#F49D37",
-          600: "#DC841C",
-          700: "#B46815",
-          800: "#8E5211",
-          900: "#6B3E0D",
+          600: "#D88224",
+          700: "#B0641B",
+          800: "#8A4E1A",
+          900: "#6E3F17",
         },
-        /* Main text — #2C3E50 */
+        /* Main text — #243746 */
         ink: {
-          DEFAULT: "#2C3E50",
-          soft: "#45596D",
-          muted: "#5B6B7D",
+          DEFAULT: "#243746",
+          soft: "#415566",
+          muted: "#63788A",
         },
-        /* Light background #F8F9FA · light borders #D1D5DB */
+        /* Light background #F4F7F9 · light borders #E2E8F0 */
         surface: {
           DEFAULT: "#FFFFFF",
-          mist: "#F8F9FA",
-          line: "#D1D5DB",
+          mist: "#F4F7F9",
+          line: "#E2E8F0",
         },
-        /* Dark background — #121212 */
-        coal: "#121212",
+        coal: "#101E28",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

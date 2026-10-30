@@ -1,90 +1,115 @@
-import {
-  EyeOff,
-  History,
-  KeyRound,
-  Lock,
-  type LucideIcon,
-} from "lucide-react";
+import { KeyRound, EyeOff, History, Lock, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { Section, SectionHeading } from "./Layout";
 import { PermissionsMockup } from "./mockups/PermissionsMockup";
-import { SecurityShield } from "./illustrations/SecurityShield";
 
-interface SecurityPoint {
-  icon: LucideIcon;
+interface SecurityItem {
+  icon: typeof KeyRound;
   title: string;
   description: string;
+  details: string[];
 }
 
-const POINTS: SecurityPoint[] = [
+const SECURITY_POINTS: SecurityItem[] = [
   {
     icon: KeyRound,
-    title: "Permisos por rol y nivel",
+    title: "Roles y perfiles jerárquicos",
     description:
-      "Define accesos distintos para dirección, mandos intermedios y el equipo de RR. HH.",
+      "Configura permisos adaptados a cada función directiva y operativa: Superadministrador corporativo, Director de empresa, Gestor de recursos humanos y Responsable de área.",
+    details: [
+      "Perfiles predefinidos basados en buenas prácticas",
+      "Asignación de permisos por nivel y departamento",
+      "Control estricto de altas, ediciones y borrados",
+    ],
   },
   {
     icon: EyeOff,
-    title: "Visibilidad acotada",
+    title: "Aislamiento de acceso por entidad",
     description:
-      "Cada unidad puede limitar qué información se comparte fuera de su ámbito.",
+      "Si gestionas varias empresas o UEBs, cada usuario accede únicamente a la información de su respectiva unidad. Los datos de una filial nunca son visibles para otra salvo autorización corporativa.",
+    details: [
+      "Separación estricta de bases de datos por entidad",
+      "Visibilidad acotada a la rama del organigrama asignada",
+      "Acceso consolidado exclusivo para la alta dirección",
+    ],
   },
   {
     icon: Lock,
-    title: "Datos sensibles protegidos",
+    title: "Protección de datos sensibles y salarios",
     description:
-      "La información salarial y contractual solo es accesible para perfiles autorizados.",
+      "La información salarial, las evaluaciones internas y los expedientes contractuales disponen de capas de visibilidad restringida que los mandos intermedios no pueden consultar.",
+    details: [
+      "Banda salarial oculta para perfiles no autorizados",
+      "Acceso restringido a documentación personal y bancaria",
+      "Permisos específicos para la preparación de prenómina",
+    ],
   },
   {
     icon: History,
-    title: "Cambios trazables",
+    title: "Historial inmutable y trazabilidad",
     description:
-      "Consulta quién ha modificado la información de la organización y cuándo.",
+      "Registro de auditoría continuo que conserva quién ha modificado cualquier dato de la organización, en qué momento exacto y cuál era el valor anterior.",
+    details: [
+      "Log cronológico con fecha, hora y usuario responsable",
+      "Trazabilidad completa en cambios de plaza y contratos",
+      "Informes de auditoría exportables para comités",
+    ],
   },
 ];
 
 export function Security() {
   return (
-    <Section id="seguridad" tone="navy" className="relative overflow-hidden">
-      <div
-        className="pointer-events-none absolute -right-16 top-10 hidden w-[420px] opacity-[0.16] lg:block"
-        aria-hidden
-      >
-        <SecurityShield />
-      </div>
+    <Section id="seguridad" tone="navy" className="relative overflow-hidden py-20 sm:py-24">
+      {/* Background ambient lighting */}
+      <div className="pointer-events-none absolute -right-20 top-1/4 h-96 w-96 rounded-full bg-teal-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -left-20 bottom-10 h-80 w-80 rounded-full bg-brand-400/10 blur-3xl" />
 
-      <div className="relative z-10 grid gap-14 lg:grid-cols-2 lg:items-center lg:gap-16">
-        <div>
-          <SectionHeading
-            align="left"
-            tone="light"
-            eyebrow="Seguridad y permisos"
-            title="Acceso jerárquico, información siempre protegida"
-            description="Sitecorp aplica un control de acceso jerárquico: cada persona ve únicamente la información que le corresponde según su rol y su posición en la organización."
-          />
+      <div className="relative z-10">
+        <SectionHeading
+          align="center"
+          tone="light"
+          eyebrow="Seguridad, Permisos y Trazabilidad"
+          title="Control riguroso del acceso a la información corporativa"
+          description="Cada persona en la organización accede estrictamente a lo que requiere para su cometido, garantizando la total confidencialidad de la estructura y de los datos laborales."
+        />
 
-          <div className="mt-10 grid gap-3 sm:grid-cols-2">
-            {POINTS.map((point, index) => (
-              <Reveal key={point.title} delay={index * 80}>
-                <div className="h-full rounded-2xl border border-white/15 bg-white/5 p-5 backdrop-blur-sm">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-accent-300">
-                                      <point.icon className="h-5 w-5" aria-hidden />
-                                    </span>
-                  <h3 className="mt-4 text-base font-bold text-white">
-                    {point.title}
-                  </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-brand-100">
-                    {point.description}
-                  </p>
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {SECURITY_POINTS.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <Reveal key={item.title} delay={index * 80}>
+                <div className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-teal-400/30 hover:bg-white/[0.08]">
+                  <div>
+                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/10 text-accent-300">
+                      <Icon className="h-5 w-5" aria-hidden />
+                    </span>
+                    <h3 className="mt-4 font-display text-base font-bold text-white">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-xs leading-relaxed text-teal-100/80">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <ul className="mt-5 space-y-1.5 border-t border-white/10 pt-4 text-[11px] text-teal-100/90">
+                    {item.details.map((detail, idx) => (
+                      <li key={idx} className="flex items-center gap-1.5">
+                        <CheckCircle2 className="h-3 w-3 shrink-0 text-accent-400" />
+                        <span>{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </Reveal>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
-        <Reveal delay={120}>
-          <PermissionsMockup />
-        </Reveal>
+        <div className="mt-14 max-w-4xl mx-auto">
+          <Reveal delay={120}>
+            <PermissionsMockup />
+          </Reveal>
+        </div>
       </div>
     </Section>
   );

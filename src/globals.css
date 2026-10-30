@@ -4,45 +4,45 @@
 
 @layer base {
   :root {
-    /* Design tokens — official Sitecorp brand identity */
-    --brand-primary: #1a5f7a;
-    --brand-secondary: #f49d37;
-    --brand-bg-light: #f8f9fa;
-    --brand-text: #2c3e50;
-    --brand-bg-dark: #121212;
-    --brand-border-light: #d1d5db;
-    --brand-white: #ffffff;
+    /* Design tokens — New Sitecorp SaaS B2B identity */
+    --brand-primary: #123f55;
+    --brand-secondary: #1a7b91;
+    --brand-accent: #f49d37;
+    --brand-bg-light: #ffffff;
+    --brand-bg-alt: #f4f7f9;
+    --brand-text: #243746;
+    --brand-border-light: #e2e8f0;
 
-    /* shadcn tokens mapped onto the brand palette */
+    /* shadcn tokens mapped onto the new brand palette */
     --background: 0 0% 100%;
-    --foreground: 210 27% 24%;
+    --foreground: 206 32% 21%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 27% 24%;
+    --card-foreground: 206 32% 21%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 27% 24%;
+    --popover-foreground: 206 32% 21%;
 
-    --primary: 197 65% 29%;
+    --primary: 200 65% 20%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 197 45% 95%;
-    --secondary-foreground: 197 65% 25%;
+    --secondary: 191 70% 34%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 17% 96%;
-    --muted-foreground: 210 15% 42%;
+    --muted: 204 24% 96%;
+    --muted-foreground: 207 18% 40%;
 
-    --accent: 197 45% 95%;
-        --accent-foreground: 197 65% 25%;
+    --accent: 32 90% 59%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 216 12% 84%;
-    --input: 216 12% 84%;
-    --ring: 197 65% 29%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 200 65% 20%;
 
-    --radius: 0.85rem;
+    --radius: 0.875rem;
   }
 
   * {
