@@ -1,0 +1,6 @@
+{
+  "name": "Sitecorp",
+  "description": "Toda tu organización. Una sola plataforma. Centraliza estructuras organizativas, trabajadores, puestos, plantillas y escalas salariales.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
