@@ -11,14 +11,25 @@ import { Faq } from "@/components/site/Faq";
 import { FinalCta } from "@/components/site/FinalCta";
 import { Footer } from "@/components/site/Footer";
 import { DemoModal } from "@/components/site/DemoModal";
+import { LegalModal, type LegalTabId } from "@/components/site/LegalModal";
 
 const Index = () => {
   const [demoModalOpen, setDemoModalOpen] = useState(false);
   const [selectedModule, setSelectedModule] = useState<string | undefined>(undefined);
 
+  const [legalModalOpen, setLegalModalOpen] = useState(false);
+  const [activeLegalTab, setActiveLegalTab] = useState<LegalTabId>("aviso-legal");
+  const [legalAdminMode, setLegalAdminMode] = useState(false);
+
   const handleOpenDemo = (moduleName?: string) => {
     setSelectedModule(moduleName);
     setDemoModalOpen(true);
+  };
+
+  const handleOpenLegal = (tab: LegalTabId, adminMode = false) => {
+    setActiveLegalTab(tab);
+    setLegalAdminMode(adminMode);
+    setLegalModalOpen(true);
   };
 
   return (
@@ -63,13 +74,24 @@ const Index = () => {
       </main>
 
       {/* Footer corporativo */}
-      <Footer onRequestDemo={() => handleOpenDemo()} />
+      <Footer
+        onRequestDemo={() => handleOpenDemo()}
+        onOpenLegal={(tab, admin) => handleOpenLegal(tab, admin)}
+      />
 
       {/* Modal interactivo de solicitud de demo */}
       <DemoModal
         open={demoModalOpen}
         onOpenChange={setDemoModalOpen}
         defaultModule={selectedModule}
+      />
+
+      {/* Centro Legal con 3 pestañas y Editor de Administrador */}
+      <LegalModal
+        open={legalModalOpen}
+        onOpenChange={setLegalModalOpen}
+        initialTab={activeLegalTab}
+        initialAdminMode={legalAdminMode}
       />
     </div>
   );

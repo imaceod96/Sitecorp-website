@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export function AppFrame({
   children,
   className,
-  url = "app.sitecorp.com",
+  url = "app.sitecorp.cu",
 }: {
   children: ReactNode;
   className?: string;

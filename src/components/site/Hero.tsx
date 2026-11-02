@@ -2,38 +2,61 @@ import { useState } from "react";
 import {
   ArrowRight,
   Briefcase,
-  Building2,
-  CalendarRange,
   CheckCircle2,
-  ChevronRight,
   Coins,
-  Download,
+  Expand,
   Layers,
   Network,
-  Plus,
-  Search,
-  ShieldCheck,
   Sparkles,
   Users,
+  X,
 } from "lucide-react";
 import { Container } from "./Layout";
-import { AppFrame, InitialsAvatar } from "./mockups/AppFrame";
+import { AppFrame } from "./mockups/AppFrame";
 import { Button } from "@/components/ui/button";
+import { PRODUCT_SCREENSHOTS } from "@/lib/screenshots";
 
 interface HeroProps {
   onRequestDemo: () => void;
 }
 
 const PILLARS = [
-  { icon: Network, label: "Estructuras y Jerarquías" },
-  { icon: Users, label: "Personas y Fichas" },
-  { icon: Layers, label: "Plantillas y Plazas" },
-  { icon: Briefcase, label: "Gestión Contractual" },
-  { icon: Coins, label: "Escalas Salariales" },
+  { icon: Network, label: "Multi-Entidad (Grupo, Empresas y UEBs)" },
+  { icon: Users, label: "Expedientes y Trabajadores" },
+  { icon: Layers, label: "Plantillas y Anexo 14B" },
+  { icon: Briefcase, label: "Contratación y Vacantes" },
+  { icon: Coins, label: "Escalas Salariales (Grupos I–XXIV)" },
+];
+
+type HeroTabKey = "resumen" | "entidades" | "plantilla";
+
+const HERO_TABS: {
+  key: HeroTabKey;
+  label: string;
+  shortBadge: string;
+}[] = [
+  {
+    key: "resumen",
+    label: "Resumen Ejecutivo",
+    shortBadge: "KPIs + Descendientes",
+  },
+  {
+    key: "entidades",
+    label: "Selector Multi-Entidad (UEBs)",
+    shortBadge: "13 Entidades en Árbol",
+  },
+  {
+    key: "plantilla",
+    label: "Plantilla & Anexo 14B",
+    shortBadge: "Plazas, Escalas y Vacantes",
+  },
 ];
 
 export function Hero({ onRequestDemo }: HeroProps) {
-  const [activeTab, setActiveTab] = useState<"resumen" | "organigrama" | "plantilla">("resumen");
+  const [activeTab, setActiveTab] = useState<HeroTabKey>("resumen");
+  const [zoomedImage, setZoomedImage] = useState<{ src: string; title: string } | null>(null);
+
+  const currentShot = PRODUCT_SCREENSHOTS[activeTab];
 
   return (
     <section id="top" className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
@@ -67,8 +90,9 @@ export function Hero({ onRequestDemo }: HeroProps) {
             className="mt-6 max-w-2xl text-base leading-relaxed text-ink-muted animate-fade-up sm:text-lg lg:text-xl"
             style={{ animationDelay: "180ms" }}
           >
-            Organiza tu estructura empresarial, gestiona personas, planifica plantillas y centraliza
-            los procesos de recursos humanos desde un único entorno.
+            Gobierna grupos empresariales, empresas y UEBs desde un único entorno: controla
+            plantillas autorizadas (Anexo 14B), expedientes de trabajadores, cobertura de vacantes,
+            escalas salariales y documentación oficial automatizada.
           </p>
 
           {/* Action Buttons */}
@@ -90,7 +114,7 @@ export function Hero({ onRequestDemo }: HeroProps) {
               href="#explorador"
               className="inline-flex h-12 w-full items-center justify-center rounded-xl border border-surface-line bg-white px-7 text-base font-semibold text-ink-soft shadow-sm transition-all hover:border-brand-300 hover:bg-surface-mist hover:text-brand-700 sm:w-auto"
             >
-              Explorar la plataforma
+              Explorar módulos reales
             </a>
           </div>
 
@@ -111,7 +135,7 @@ export function Hero({ onRequestDemo }: HeroProps) {
           </ul>
         </div>
 
-        {/* Hero Interactive Showcase / Product Preview */}
+        {/* Hero Interactive Showcase with Real Product Captures */}
         <div
           className="relative mt-12 animate-fade-up sm:mt-16 lg:mt-20"
           style={{ animationDelay: "420ms" }}
@@ -121,249 +145,134 @@ export function Hero({ onRequestDemo }: HeroProps) {
             aria-hidden
           />
 
-          <AppFrame url="app.sitecorp.com/panel-control" className="relative shadow-lift">
+          <AppFrame url={currentShot.url} className="relative shadow-lift">
             <div className="bg-surface-mist">
-              {/* Internal Mockup Navigation */}
+              {/* Top Interactive Switcher Bar */}
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-surface-line bg-white px-4 py-3 sm:px-6">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1.5 rounded-lg bg-surface-mist p-1 border border-surface-line">
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab("resumen")}
-                      className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
-                        activeTab === "resumen"
-                          ? "bg-brand-500 text-white shadow-sm"
-                          : "text-ink-soft hover:bg-white"
-                      }`}
-                    >
-                      Resumen Ejecutivo
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab("organigrama")}
-                      className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
-                        activeTab === "organigrama"
-                          ? "bg-brand-500 text-white shadow-sm"
-                          : "text-ink-soft hover:bg-white"
-                      }`}
-                    >
-                      Estructura & UEBs
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab("plantilla")}
-                      className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
-                        activeTab === "plantilla"
-                          ? "bg-brand-500 text-white shadow-sm"
-                          : "text-ink-soft hover:bg-white"
-                      }`}
-                    >
-                      Plazas & Vacantes
-                    </button>
-                  </div>
+                <div className="flex flex-wrap items-center gap-1.5 rounded-xl bg-surface-mist p-1 border border-surface-line">
+                  {HERO_TABS.map((tab) => {
+                    const isActive = activeTab === tab.key;
+                    return (
+                      <button
+                        key={tab.key}
+                        type="button"
+                        onClick={() => setActiveTab(tab.key)}
+                        className={`flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+                          isActive
+                            ? "bg-brand-500 text-white shadow-sm"
+                            : "text-ink-soft hover:bg-white hover:text-brand-600"
+                        }`}
+                      >
+                        <span>{tab.label}</span>
+                        <span
+                          className={`hidden rounded px-1.5 py-0.5 text-[10px] md:inline-block ${
+                            isActive
+                              ? "bg-white/20 text-white"
+                              : "bg-teal-50 text-teal-700"
+                          }`}
+                        >
+                          {tab.shortBadge}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
 
-                <div className="hidden items-center gap-2 sm:flex">
-                  <div className="flex items-center gap-1.5 rounded-lg bg-surface-mist px-3 py-1.5 text-xs text-ink-muted border border-surface-line">
-                    <Search className="h-3.5 w-3.5 text-ink-muted" />
-                    <span>Buscar departamento o trabajador...</span>
-                  </div>
-                  <span className="rounded-lg bg-teal-50 px-2.5 py-1 text-xs font-semibold text-teal-800">
-                    Entidad: Holding Corporativo
+                <div className="flex items-center gap-2">
+                  <span className="hidden items-center gap-1.5 rounded-lg bg-teal-50 px-2.5 py-1 text-xs font-semibold text-teal-800 sm:inline-flex">
+                    <Sparkles className="h-3.5 w-3.5 text-accent-500" />
+                    Captura real del sistema SiteCorp
                   </span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setZoomedImage({ src: currentShot.src, title: currentShot.title })
+                    }
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-surface-line bg-white px-2.5 py-1 text-xs font-semibold text-ink-soft shadow-sm transition-colors hover:border-brand-300 hover:text-brand-600"
+                  >
+                    <Expand className="h-3.5 w-3.5" />
+                    <span>Ampliar vista</span>
+                  </button>
                 </div>
               </div>
 
-              {/* Dynamic Tab Body */}
-              <div className="p-4 sm:p-6">
-                {activeTab === "resumen" && (
-                  <div className="space-y-4">
-                    {/* Real Enterprise KPI Bar */}
-                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                      <div className="rounded-xl border border-surface-line bg-white p-3.5 shadow-sm">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
-                          Plantilla Activa
-                        </span>
-                        <p className="mt-1 font-display text-2xl font-extrabold text-ink">1.248</p>
-                        <p className="mt-0.5 text-[11px] font-medium text-emerald-700 flex items-center gap-1">
-                          <CheckCircle2 className="h-3 w-3" /> 100% con contrato activo
-                        </p>
-                      </div>
-
-                      <div className="rounded-xl border border-surface-line bg-white p-3.5 shadow-sm">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
-                          Plazas Presupuestadas
-                        </span>
-                        <p className="mt-1 font-display text-2xl font-extrabold text-brand-600">1.320</p>
-                        <p className="mt-0.5 text-[11px] font-medium text-teal-700">
-                          94.5% cobertura autorizada
-                        </p>
-                      </div>
-
-                      <div className="rounded-xl border border-surface-line bg-white p-3.5 shadow-sm">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
-                          Plazas Vacantes
-                        </span>
-                        <p className="mt-1 font-display text-2xl font-extrabold text-accent-500">72</p>
-                        <p className="mt-0.5 text-[11px] font-medium text-accent-700">
-                          42 en proceso selectivo
-                        </p>
-                      </div>
-
-                      <div className="rounded-xl border border-surface-line bg-white p-3.5 shadow-sm">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
-                          Entidades & UEBs
-                        </span>
-                        <p className="mt-1 font-display text-2xl font-extrabold text-ink">14</p>
-                        <p className="mt-0.5 text-[11px] font-medium text-ink-soft">
-                          Organigrama consolidado
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Split View: Mini Org Tree & Recent Movements */}
-                    <div className="grid gap-4 lg:grid-cols-12">
-                      <div className="rounded-xl border border-surface-line bg-white p-4 lg:col-span-7">
-                        <div className="flex items-center justify-between border-b border-surface-line pb-2.5">
-                          <p className="text-xs font-bold text-ink">Estructura Organizativa Consolidada</p>
-                          <span className="text-[10px] text-brand-600 font-semibold">Ver organigrama completo →</span>
-                        </div>
-                        <div className="mt-3 space-y-2">
-                          <div className="flex items-center justify-between rounded-lg bg-surface-mist p-2.5 text-xs">
-                            <div className="flex items-center gap-2">
-                              <span className="h-2 w-2 rounded-full bg-brand-500" />
-                              <span className="font-bold text-ink">Dirección General & Presidencia</span>
-                            </div>
-                            <span className="font-mono text-[11px] text-ink-muted">6 plazas · 100%</span>
-                          </div>
-                          <div className="ml-4 flex items-center justify-between rounded-lg bg-surface-mist/70 p-2.5 text-xs border border-surface-line">
-                            <div className="flex items-center gap-2">
-                              <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
-                              <span className="font-semibold text-ink">UEB Operaciones Industriales</span>
-                            </div>
-                            <span className="font-mono text-[11px] text-teal-700">462 / 480 plazas</span>
-                          </div>
-                          <div className="ml-4 flex items-center justify-between rounded-lg bg-surface-mist/70 p-2.5 text-xs border border-surface-line">
-                            <div className="flex items-center gap-2">
-                              <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
-                              <span className="font-semibold text-ink">UEB Servicios Técnicos & Logística</span>
-                            </div>
-                            <span className="font-mono text-[11px] text-teal-700">362 / 390 plazas</span>
-                          </div>
-                          <div className="ml-4 flex items-center justify-between rounded-lg bg-surface-mist/70 p-2.5 text-xs border border-surface-line">
-                            <div className="flex items-center gap-2">
-                              <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
-                              <span className="font-semibold text-ink">Dirección Central de Recursos Humanos</span>
-                            </div>
-                            <span className="font-mono text-[11px] text-teal-700">28 / 28 plazas</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="rounded-xl border border-surface-line bg-white p-4 lg:col-span-5">
-                        <div className="flex items-center justify-between border-b border-surface-line pb-2.5">
-                          <p className="text-xs font-bold text-ink">Movimientos y Altas Recientes</p>
-                          <span className="text-[10px] text-teal-700 font-semibold">Trazabilidad OK</span>
-                        </div>
-                        <div className="mt-3 space-y-2.5 text-xs">
-                          {[
-                            { name: "Beatriz Carrillo", action: "Alta contractual (Indefinido)", unit: "UEB Logística", time: "Hoy" },
-                            { name: "Marcos Del Valle", action: "Promoción a Jefe de Área", unit: "Operaciones", time: "Ayer" },
-                            { name: "Elena Ramos", action: "Reubicación aprobada", unit: "Sistemas TI", time: "Hace 2d" },
-                          ].map((mov, i) => (
-                            <div key={i} className="flex items-center justify-between border-b border-surface-line/70 pb-2 last:border-0 last:pb-0">
-                              <div className="flex items-center gap-2">
-                                <InitialsAvatar name={mov.name} className="h-6 w-6 text-[10px]" />
-                                <div>
-                                  <p className="font-bold text-ink text-[11px]">{mov.name}</p>
-                                  <p className="text-[10px] text-ink-muted">{mov.action}</p>
-                                </div>
-                              </div>
-                              <span className="text-[10px] font-mono text-ink-muted">{mov.time}</span>
-                            </div>
-                          ))}
+              {/* Real Screenshot Display */}
+              <div className="p-3 sm:p-5">
+                {activeTab === "entidades" ? (
+                  <div className="grid gap-5 lg:grid-cols-12 lg:items-center">
+                    <div className="lg:col-span-6 flex justify-center">
+                      <div
+                        onClick={() =>
+                          setZoomedImage({ src: currentShot.src, title: currentShot.title })
+                        }
+                        className="group relative cursor-zoom-in overflow-hidden rounded-xl border border-surface-line bg-white shadow-card transition-all hover:border-brand-300"
+                      >
+                        <img
+                          src={currentShot.src}
+                          alt={currentShot.title}
+                          className="max-h-[460px] w-auto object-contain mx-auto"
+                        />
+                        <div className="absolute bottom-3 right-3 rounded-lg bg-ink/80 px-2.5 py-1 text-[11px] font-semibold text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
+                          Clic para ampliar
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
-
-                {activeTab === "organigrama" && (
-                  <div className="rounded-xl border border-surface-line bg-white p-5 text-center">
-                    <p className="text-xs font-bold text-teal-700 uppercase tracking-wider">
-                      Modelo Organizativo Dinámico
-                    </p>
-                    <h4 className="mt-1 font-display text-base font-bold text-ink">
-                      Jerarquía Multi-Entidad con Dependencias Directas
-                    </h4>
-                    <p className="mt-1 text-xs text-ink-muted max-w-lg mx-auto">
-                      Cada centro y departamento refleja su línea de mando, responsables asignados y
-                      su cuota presupuestaria de personal.
-                    </p>
-
-                    <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
-                      <div className="rounded-xl border border-surface-line bg-surface-mist p-3">
-                        <span className="text-[10px] font-bold text-brand-600">EMPRESA MATRIZ</span>
-                        <p className="font-bold text-xs text-ink mt-1">SiteCorp Holding S.A.</p>
-                        <p className="text-[10px] text-ink-muted">Responsable: Alejandro Valdés</p>
-                        <span className="mt-2 inline-block rounded bg-teal-50 px-1.5 py-0.5 text-[9px] font-semibold text-teal-800">
-                          18 dependencias directas
-                        </span>
-                      </div>
-                      <div className="rounded-xl border border-surface-line bg-surface-mist p-3">
-                        <span className="text-[10px] font-bold text-teal-700">UNIDAD EMPRESARIAL BASE</span>
-                        <p className="font-bold text-xs text-ink mt-1">UEB Industrial Norte</p>
-                        <p className="text-[10px] text-ink-muted">Responsable: Roberto Maza</p>
-                        <span className="mt-2 inline-block rounded bg-teal-50 px-1.5 py-0.5 text-[9px] font-semibold text-teal-800">
-                          462 trabajadores
-                        </span>
-                      </div>
-                      <div className="rounded-xl border border-surface-line bg-surface-mist p-3">
-                        <span className="text-[10px] font-bold text-teal-700">UNIDAD EMPRESARIAL BASE</span>
-                        <p className="font-bold text-xs text-ink mt-1">UEB Logística & Transporte</p>
-                        <p className="text-[10px] text-ink-muted">Responsable: Elena Cordero</p>
-                        <span className="mt-2 inline-block rounded bg-teal-50 px-1.5 py-0.5 text-[9px] font-semibold text-teal-800">
-                          362 trabajadores
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === "plantilla" && (
-                  <div className="rounded-xl border border-surface-line bg-white p-4">
-                    <div className="flex items-center justify-between border-b border-surface-line pb-3">
-                      <div>
-                        <h4 className="text-xs font-bold text-ink">Control de Plazas y Vacantes por Nivel</h4>
-                        <p className="text-[10px] text-ink-muted">Comparativa presupuestada vs real actualizada hoy</p>
-                      </div>
-                      <span className="rounded-md bg-brand-500 px-2.5 py-1 text-[10px] font-semibold text-white">
-                        + Nueva plaza presupuestada
+                    <div className="lg:col-span-6 space-y-4 text-left bg-white p-5 sm:p-6 rounded-xl border border-surface-line shadow-sm">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-teal-700">
+                        {currentShot.badge}
                       </span>
+                      <h3 className="font-display text-xl font-bold text-ink">
+                        {currentShot.title}
+                      </h3>
+                      <p className="text-sm leading-relaxed text-ink-muted">
+                        {currentShot.subtitle}
+                      </p>
+                      <ul className="space-y-2.5 pt-2">
+                        {currentShot.highlights.map((item, i) => (
+                          <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-ink-soft">
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-600" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div
+                      onClick={() =>
+                        setZoomedImage({ src: currentShot.src, title: currentShot.title })
+                      }
+                      className="group relative cursor-zoom-in overflow-hidden rounded-xl border border-surface-line bg-white shadow-sm transition-all hover:border-brand-300"
+                    >
+                      <img
+                        src={currentShot.src}
+                        alt={currentShot.title}
+                        className="w-full h-auto object-cover"
+                      />
+                      <div className="absolute bottom-3 right-3 rounded-lg bg-ink/80 px-3 py-1.5 text-xs font-semibold text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 flex items-center gap-1.5">
+                        <Expand className="h-3.5 w-3.5" />
+                        Clic para ver en pantalla completa
+                      </div>
                     </div>
 
-                    <div className="mt-3 divide-y divide-surface-line text-[11px]">
-                      {[
-                        { cargo: "Especialista Principal de RRHH", nivel: "Escala VII", pres: 14, cub: 14, vac: 0, estado: "Completo" },
-                        { cargo: "Ingeniero de Operaciones de Planta", nivel: "Escala VI", pres: 28, cub: 24, vac: 4, estado: "4 en selección" },
-                        { cargo: "Técnico Especialista en Mantenimiento", nivel: "Escala V", pres: 45, cub: 41, vac: 4, estado: "2 convocatorias" },
-                        { cargo: "Analista de Control y Presupuesto", nivel: "Escala VI", pres: 8, cub: 7, vac: 1, estado: "1 vacante libre" },
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center justify-between py-2.5">
-                          <div>
-                            <p className="font-bold text-ink">{item.cargo}</p>
-                            <p className="text-[10px] text-ink-muted">{item.nivel}</p>
-                          </div>
-                          <div className="flex items-center gap-4 text-right">
-                            <span className="font-mono text-xs text-ink font-semibold">{item.cub} / {item.pres}</span>
-                            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded ${
-                              item.vac === 0 ? "bg-emerald-50 text-emerald-700" : "bg-accent-50 text-accent-700"
-                            }`}>
-                              {item.estado}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
+                    {/* Caption Strip */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-surface-line bg-white px-4 py-3 text-left">
+                      <div>
+                        <p className="text-xs font-bold text-ink">{currentShot.title}</p>
+                        <p className="text-[11px] text-ink-muted">{currentShot.subtitle}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {currentShot.highlights.map((h, i) => (
+                          <span
+                            key={i}
+                            className="inline-flex items-center gap-1 rounded-md bg-surface-mist px-2.5 py-1 text-[11px] font-medium text-ink-soft border border-surface-line"
+                          >
+                            <CheckCircle2 className="h-3 w-3 text-teal-600 shrink-0" />
+                            {h}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -372,6 +281,38 @@ export function Hero({ onRequestDemo }: HeroProps) {
           </AppFrame>
         </div>
       </Container>
+
+      {/* Lightbox Modal for Full-Resolution Inspection */}
+      {zoomedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/80 p-4 backdrop-blur-sm animate-fade-in"
+          onClick={() => setZoomedImage(null)}
+        >
+          <div
+            className="relative max-h-[92vh] max-w-6xl overflow-hidden rounded-2xl border border-white/20 bg-white shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-surface-line bg-surface-mist px-4 py-3">
+              <p className="text-xs font-bold text-ink sm:text-sm">{zoomedImage.title}</p>
+              <button
+                type="button"
+                onClick={() => setZoomedImage(null)}
+                className="rounded-lg p-1 text-ink-muted hover:bg-white hover:text-ink"
+                aria-label="Cerrar vista ampliada"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="max-h-[82vh] overflow-auto bg-surface-mist p-2 sm:p-4">
+              <img
+                src={zoomedImage.src}
+                alt={zoomedImage.title}
+                className="mx-auto h-auto max-w-full rounded-lg shadow-sm"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="h-16 sm:h-20" aria-hidden />
     </section>

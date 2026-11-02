@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Container } from "./Layout";
 import { Logo } from "./Logo";
 import { LoginModal } from "./LoginModal";
+import { DIRECT_LOGIN_ENABLED, DIRECT_LOGIN_URL } from "@/config/authConfig";
 
 interface NavbarProps {
   onRequestDemo?: () => void;
@@ -24,6 +25,11 @@ export function Navbar({ onRequestDemo }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+
+  // Si la web se visualiza dentro de un iframe de previsualización, abre en pestaña nueva
+  // para evitar bloqueos de seguridad del navegador hacia localhost; en producción redirige directo.
+  const isEmbeddedPreview =
+    typeof window !== "undefined" && window.self !== window.top;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -67,14 +73,26 @@ export function Navbar({ onRequestDemo }: NavbarProps) {
             </nav>
 
             <div className="hidden items-center gap-2 lg:flex">
-              <button
-                type="button"
-                onClick={() => setLoginModalOpen(true)}
-                className="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-ink-soft transition-colors hover:bg-surface-mist hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-              >
-                <User className="h-3.5 w-3.5" />
-                Iniciar sesión
-              </button>
+              {DIRECT_LOGIN_ENABLED ? (
+                <a
+                  href={DIRECT_LOGIN_URL}
+                  target={isEmbeddedPreview ? "_blank" : "_self"}
+                  rel={isEmbeddedPreview ? "noopener noreferrer" : undefined}
+                  className="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-ink-soft transition-colors hover:bg-surface-mist hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                >
+                  <User className="h-3.5 w-3.5" />
+                  Iniciar sesión
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setLoginModalOpen(true)}
+                  className="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-ink-soft transition-colors hover:bg-surface-mist hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                >
+                  <User className="h-3.5 w-3.5" />
+                  Iniciar sesión
+                </button>
+              )}
 
               <button
                 type="button"
@@ -123,16 +141,28 @@ export function Navbar({ onRequestDemo }: NavbarProps) {
             </nav>
 
             <div className="mt-4 flex flex-col gap-2 border-t border-surface-line pt-4">
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(false);
-                  setLoginModalOpen(true);
-                }}
-                className="w-full rounded-xl border border-surface-line py-2.5 text-center text-xs font-semibold text-ink-soft hover:bg-surface-mist"
-              >
-                Iniciar sesión
-              </button>
+              {DIRECT_LOGIN_ENABLED ? (
+                <a
+                  href={DIRECT_LOGIN_URL}
+                  target={isEmbeddedPreview ? "_blank" : "_self"}
+                  rel={isEmbeddedPreview ? "noopener noreferrer" : undefined}
+                  onClick={() => setOpen(false)}
+                  className="w-full rounded-xl border border-surface-line py-2.5 text-center text-xs font-semibold text-ink-soft hover:bg-surface-mist"
+                >
+                  Iniciar sesión
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    setLoginModalOpen(true);
+                  }}
+                  className="w-full rounded-xl border border-surface-line py-2.5 text-center text-xs font-semibold text-ink-soft hover:bg-surface-mist"
+                >
+                  Iniciar sesión
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => {

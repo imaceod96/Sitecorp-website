@@ -53,7 +53,7 @@ function OrgNode({ title, subtitle }: { title: string; subtitle: string }) {
 
 export function DashboardMockup() {
   return (
-    <AppFrame url="app.sitecorp.com/estructura">
+    <AppFrame url="app.sitecorp.cu/estructura">
       <div className="flex bg-surface-mist">
         <MockSidebar items={NAV_ITEMS} activeIndex={1} />
 

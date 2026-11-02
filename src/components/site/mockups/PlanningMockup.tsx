@@ -33,7 +33,7 @@ const PLAN = [
 
 export function PlanningMockup() {
   return (
-    <AppFrame url="app.sitecorp.com/plantillas">
+    <AppFrame url="app.sitecorp.cu/plantillas">
       <div className="flex bg-surface-mist">
         <MockSidebar items={NAV_ITEMS} activeIndex={4} />
 

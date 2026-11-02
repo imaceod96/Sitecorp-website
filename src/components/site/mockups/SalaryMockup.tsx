@@ -36,7 +36,7 @@ const SCALES = [
 
 export function SalaryMockup() {
   return (
-    <AppFrame url="app.sitecorp.com/escalas">
+    <AppFrame url="app.sitecorp.cu/escalas">
       <div className="flex bg-surface-mist">
         <MockSidebar items={NAV_ITEMS} activeIndex={5} />
 
