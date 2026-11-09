@@ -1,119 +1,94 @@
 /**
- * Configuración centralizada de correo de contacto y recepción de solicitudes de Demo
- * -----------------------------------------------------------------------------------
- * Modifica `CONTACT_EMAIL` aquí (o mediante `VITE_SITECORP_CONTACT_EMAIL` en `.env`)
- * cuando desees cambiar el correo temporal por el definitivo de producción.
+ * Configuración centralizada de contacto comercial y conexión con Google Forms
+ * ----------------------------------------------------------------------------
+ * Mapea los campos del formulario de SiteCorp directamente a las entradas (`entry.*`)
+ * del formulario de Google Forms del proyecto (`https://forms.gle/Y6zfrdpNnq9stBjs6`).
  */
 
 export const CONTACT_EMAIL: string =
   import.meta.env.VITE_SITECORP_CONTACT_EMAIL || "imaceod96+sitecorp@gmail.com";
 
-export interface DemoSubmissionPayload {
-  origen: "Modal de Demostración" | "Sección de Contacto";
+export const GOOGLE_FORM_SHORT_URL = "https://forms.gle/Y6zfrdpNnq9stBjs6";
+
+export const GOOGLE_FORM_ID = "1FAIpQLScKL3IDjvzeJiPhbyrleKE68VJqLuezjaMHr8aRxUANOVczbQ";
+
+export const GOOGLE_FORM_VIEW_URL: string = (
+  import.meta.env.VITE_SITECORP_DEMO_FORM_URL ||
+  `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/viewform`
+).trim();
+
+export const GOOGLE_FORM_RESPONSE_URL = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`;
+
+/**
+ * IDs exactos de cada campo dentro del Google Form de SiteCorp
+ */
+export const GOOGLE_FORM_ENTRIES = {
+  nombre: "entry.252411663", // Nombre del solicitante
+  empresa: "entry.545589378", // Nombre de la entidad
+  email: "entry.694825319", // Correo electrónico
+  empleados: "entry.215461061", // Cantidad de trabajadores
+  mensaje: "entry.1033627008", // Mensaje o comentarios adicionales (Retos organizativos)
+} as const;
+
+/**
+ * Intervalos de cantidad de trabajadores idénticos a las opciones configuradas en el Google Form
+ */
+export const WORKER_COUNT_OPTIONS = [
+  { value: "Menos de 50 empleados", label: "Menos de 50 empleados" },
+  { value: "50 a 250 empleados", label: "50 a 250 empleados" },
+  { value: "250 a 1000 empleados", label: "250 a 1.000 empleados" },
+  { value: "Mas de 1000 empleados", label: "Más de 1.000 empleados" },
+] as const;
+
+export interface DemoFormPayload {
   nombre: string;
-  email: string;
   empresa: string;
+  email: string;
   empleados: string;
-  tipoOrganizacion?: string;
-  mensaje?: string;
-  moduloInteres?: string;
-}
-
-export interface DemoSubmissionResult {
-  ok: boolean;
-  deliveredViaAjax: boolean;
-  mailtoUrl: string;
-  errorMessage?: string;
+  mensaje: string;
 }
 
 /**
- * Construye un enlace `mailto:` con todos los datos de la solicitud formateados
- * como respaldo directo o envío desde el cliente de correo del usuario.
+ * Genera la URL del Google Form con todos los campos pre-rellenados (`usp=pp_url`)
  */
-export function buildDemoMailtoUrl(payload: DemoSubmissionPayload): string {
-  const subject = `[SiteCorp Demo] Solicitud de ${payload.empresa} (${payload.nombre})`;
-  const lines = [
-    `Hola equipo de SiteCorp,`,
-    ``,
-    `Se ha registrado una nueva solicitud de demostración guiada:`,
-    ``,
-    `• Nombre y apellidos: ${payload.nombre}`,
-    `• Email corporativo: ${payload.email}`,
-    `• Empresa u organización: ${payload.empresa}`,
-    `• Tamaño de plantilla: ${payload.empleados}`,
-    payload.tipoOrganizacion ? `• Tipo de estructura: ${payload.tipoOrganizacion}` : null,
-    payload.moduloInteres ? `• Módulo de interés: ${payload.moduloInteres}` : null,
-    payload.mensaje ? `• Retos / Necesidades: ${payload.mensaje}` : null,
-    `• Origen del formulario: ${payload.origen}`,
-  ].filter(Boolean);
+export function buildPrefilledGoogleFormUrl(payload: DemoFormPayload): string {
+  const params = new URLSearchParams({
+    usp: "pp_url",
+    [GOOGLE_FORM_ENTRIES.nombre]: payload.nombre.trim(),
+    [GOOGLE_FORM_ENTRIES.empresa]: payload.empresa.trim(),
+    [GOOGLE_FORM_ENTRIES.email]: payload.email.trim(),
+    [GOOGLE_FORM_ENTRIES.empleados]: payload.empleados,
+  });
 
-  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-    lines.join("\n"),
-  )}`;
+  if (payload.mensaje.trim()) {
+    params.set(GOOGLE_FORM_ENTRIES.mensaje, payload.mensaje.trim());
+  }
+
+  return `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/viewform?${params.toString()}`;
 }
 
 /**
- * Envía los datos del formulario de solicitud de demo al correo configurado (`CONTACT_EMAIL`)
- * mediante FormSubmit AJAX (`https://formsubmit.co/ajax/...`).
+ * Envía los datos del formulario directamente a los campos correspondientes de Google Forms
  */
-export async function sendDemoRequestEmail(
-  payload: DemoSubmissionPayload,
-): Promise<DemoSubmissionResult> {
-  const mailtoUrl = buildDemoMailtoUrl(payload);
+export async function submitToGoogleForms(payload: DemoFormPayload): Promise<boolean> {
+  const formData = new URLSearchParams();
+  formData.append(GOOGLE_FORM_ENTRIES.nombre, payload.nombre.trim());
+  formData.append(GOOGLE_FORM_ENTRIES.empresa, payload.empresa.trim());
+  formData.append(GOOGLE_FORM_ENTRIES.email, payload.email.trim());
+  formData.append(GOOGLE_FORM_ENTRIES.empleados, payload.empleados);
+  formData.append(GOOGLE_FORM_ENTRIES.mensaje, payload.mensaje.trim());
 
   try {
-    const response = await fetch(
-      `https://formsubmit.co/ajax/${encodeURIComponent(CONTACT_EMAIL)}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          _subject: `[SiteCorp Demo] Nueva solicitud de ${payload.empresa} — ${payload.nombre}`,
-          _template: "table",
-          _captcha: "false",
-          _replyto: payload.email,
-          Nombre_Completo: payload.nombre,
-          Email_Corporativo: payload.email,
-          Empresa_Organizacion: payload.empresa,
-          Tamano_Plantilla: payload.empleados,
-          Tipo_Estructura: payload.tipoOrganizacion || "No especificado",
-          Modulo_Interes: payload.moduloInteres || "General",
-          Mensaje_Necesidades: payload.mensaje || "Sin comentarios adicionales",
-          Formulario_Origen: payload.origen,
-        }),
+    await fetch(GOOGLE_FORM_RESPONSE_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-    );
-
-    const data = await response.json().catch(() => ({}));
-    const isSuccess =
-      response.ok && (data?.success === "true" || data?.success === true || response.status === 200);
-
-    if (isSuccess) {
-      return {
-        ok: true,
-        deliveredViaAjax: true,
-        mailtoUrl,
-      };
-    }
-
-    return {
-      ok: true,
-      deliveredViaAjax: false,
-      mailtoUrl,
-      errorMessage:
-        data?.message ||
-        "El servicio de correo requiere confirmar la activación inicial o usar el cliente de correo.",
-    };
+      body: formData.toString(),
+    });
+    return true;
   } catch {
-    return {
-      ok: true,
-      deliveredViaAjax: false,
-      mailtoUrl,
-      errorMessage:
-        "No se pudo conectar con el servidor de envío directo. Puedes completar el envío abriendo tu cliente de correo.",
-    };
+    return false;
   }
 }

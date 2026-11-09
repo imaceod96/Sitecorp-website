@@ -70,7 +70,7 @@ const Index = () => {
         <Faq onRequestDemo={() => handleOpenDemo("Dudas y Evaluación")} />
 
         {/* 9. CTA final con formulario de contacto y demostración */}
-        <FinalCta />
+        <FinalCta onOpenPrivacy={() => handleOpenLegal("privacidad")} />
       </main>
 
       {/* Footer corporativo */}
@@ -84,6 +84,7 @@ const Index = () => {
         open={demoModalOpen}
         onOpenChange={setDemoModalOpen}
         defaultModule={selectedModule}
+        onOpenPrivacy={() => handleOpenLegal("privacidad")}
       />
 
       {/* Centro Legal con 3 pestañas y Editor de Administrador */}

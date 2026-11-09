@@ -8,9 +8,13 @@ import { Reveal } from "./Reveal";
 import { Section } from "./Layout";
 import {
   CONTACT_EMAIL,
-  sendDemoRequestEmail,
-  type DemoSubmissionResult,
+  WORKER_COUNT_OPTIONS,
+  submitToGoogleForms,
 } from "@/config/contactConfig";
+
+interface FinalCtaProps {
+  onOpenPrivacy?: () => void;
+}
 
 interface FormState {
   nombre: string;
@@ -26,7 +30,7 @@ const EMPTY_FORM: FormState = {
   nombre: "",
   email: "",
   empresa: "",
-  empleados: "50-250",
+  empleados: WORKER_COUNT_OPTIONS[1].value,
   mensaje: "",
 };
 
@@ -54,12 +58,11 @@ function validate(values: FormState): FormErrors {
   return errors;
 }
 
-export function FinalCta() {
+export function FinalCta({ onOpenPrivacy }: FinalCtaProps) {
   const [values, setValues] = useState<FormState>(EMPTY_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [submissionResult, setSubmissionResult] = useState<DemoSubmissionResult | null>(null);
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -78,21 +81,15 @@ export function FinalCta() {
     }
 
     setLoading(true);
-    const result = await sendDemoRequestEmail({
-      origen: "Sección de Contacto",
-      nombre: values.nombre.trim(),
-      email: values.email.trim(),
-      empresa: values.empresa.trim(),
+    await submitToGoogleForms({
+      nombre: values.nombre,
+      empresa: values.empresa,
+      email: values.email,
       empleados: values.empleados,
-      mensaje: values.mensaje.trim(),
+      mensaje: values.mensaje,
     });
     setLoading(false);
-    setSubmissionResult(result);
     setSubmitted(true);
-
-    if (!result.deliveredViaAjax && result.mailtoUrl) {
-      window.location.href = result.mailtoUrl;
-    }
   };
 
   const errorClass = (field: keyof FormState) =>
@@ -166,31 +163,20 @@ export function FinalCta() {
                     Gracias, {values.nombre.trim().split(" ")[0]}.
                   </h3>
                   <p className="mt-2 text-xs leading-relaxed text-ink-muted sm:text-sm">
-                    Hemos enviado tu solicitud de demostración para{" "}
-                    <span className="font-semibold text-ink">{values.empresa.trim()}</span> a{" "}
-                    <span className="font-semibold text-ink">{CONTACT_EMAIL}</span>. Nos
+                    Hemos registrado tu solicitud de demostración para{" "}
+                    <span className="font-semibold text-ink">{values.empresa.trim()}</span>. Nos
                     pondremos en contacto a la dirección{" "}
                     <span className="font-semibold text-ink">{values.email.trim()}</span> en menos de
                     24 horas laborables.
                   </p>
-                  {submissionResult?.mailtoUrl && (
-                    <a
-                      href={submissionResult.mailtoUrl}
-                      className="mt-4 inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50/60 px-4 py-2 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-100"
-                    >
-                      <Mail className="h-3.5 w-3.5" />
-                      Enviar también copia directa por correo
-                    </a>
-                  )}
                   <Button
                     type="button"
                     variant="outline"
-                    className="mt-3 h-10 rounded-xl border-brand-200 px-5 text-xs font-semibold text-brand-700 hover:bg-brand-50"
+                    className="mt-6 h-10 rounded-xl border-brand-200 px-5 text-xs font-semibold text-brand-700 hover:bg-brand-50"
                     onClick={() => {
                       setValues(EMPTY_FORM);
                       setErrors({});
                       setSubmitted(false);
-                      setSubmissionResult(null);
                     }}
                   >
                     Enviar otra solicitud
@@ -261,7 +247,7 @@ export function FinalCta() {
 
                     <div className="space-y-1.5">
                       <Label htmlFor="cta-empleados" className="text-xs font-semibold text-ink-soft">
-                        Plantilla aproximada
+                        Cantidad de trabajadores
                       </Label>
                       <select
                         id="cta-empleados"
@@ -270,10 +256,11 @@ export function FinalCta() {
                         onChange={handleChange}
                         className="flex h-10 w-full rounded-xl border border-input bg-surface-mist px-3 py-1 text-xs text-ink ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       >
-                        <option value="1-50">Menos de 50 empleados</option>
-                        <option value="50-250">50 a 250 empleados</option>
-                        <option value="250-1000">250 a 1.000 empleados</option>
-                        <option value="+1000">Más de 1.000 empleados</option>
+                        {WORKER_COUNT_OPTIONS.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -308,9 +295,19 @@ export function FinalCta() {
 
                   <p className="text-center text-[11px] leading-relaxed text-ink-muted">
                     Tratamos tus datos conforme a nuestra{" "}
-                    <a href="#contacto" className="font-semibold text-brand-600 hover:underline">
-                      política de privacidad corporativa
-                    </a>
+                    {onOpenPrivacy ? (
+                      <button
+                        type="button"
+                        onClick={onOpenPrivacy}
+                        className="font-semibold text-brand-600 hover:underline"
+                      >
+                        política de privacidad corporativa
+                      </button>
+                    ) : (
+                      <a href="#contacto" className="font-semibold text-brand-600 hover:underline">
+                        política de privacidad corporativa
+                      </a>
+                    )}
                     . Sin compromiso ni spam.
                   </p>
                 </form>
