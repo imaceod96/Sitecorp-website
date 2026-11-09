@@ -97,7 +97,7 @@ export const DEFAULT_LEGAL_STATE: LegalStoreState = {
     entityName: "SiteCorp — Plataforma de Gestión de Capital Humano",
     nitReeup: "Registro Nacional de Constructores y Productores de Software (RNCPS)",
     address: "La Habana, República de Cuba",
-    contactEmail: "hola@sitecorp.com",
+    contactEmail: "imaceod96+sitecorp@gmail.com",
     dpoRole: "Dirección de Seguridad Informática y Protección de Datos",
     lastUpdated: "Noviembre 2026",
   },

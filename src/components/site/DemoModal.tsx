@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,12 +12,16 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   ArrowRight,
-  Building2,
   CheckCircle2,
   Mail,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
+import {
+  CONTACT_EMAIL,
+  sendDemoRequestEmail,
+  type DemoSubmissionResult,
+} from "@/config/contactConfig";
 
 interface DemoModalProps {
   open: boolean;
@@ -53,6 +57,18 @@ export function DemoModal({ open, onOpenChange, defaultModule }: DemoModalProps)
   const [errors, setErrors] = useState<Partial<Record<keyof DemoFormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submissionResult, setSubmissionResult] = useState<DemoSubmissionResult | null>(null);
+
+  useEffect(() => {
+    if (open && !submitted) {
+      setValues((prev) => ({
+        ...prev,
+        necesidad: defaultModule
+          ? `Interés especial en el módulo de ${defaultModule}.`
+          : prev.necesidad,
+      }));
+    }
+  }, [open, defaultModule, submitted]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -62,7 +78,7 @@ export function DemoModal({ open, onOpenChange, defaultModule }: DemoModalProps)
     setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newErrors: Partial<Record<keyof DemoFormState, string>> = {};
 
@@ -78,17 +94,30 @@ export function DemoModal({ open, onOpenChange, defaultModule }: DemoModalProps)
     if (Object.keys(newErrors).length > 0) return;
 
     setLoading(true);
-    // Simulate brief network submission
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 400);
+    const result = await sendDemoRequestEmail({
+      origen: "Modal de Demostración",
+      nombre: values.nombre.trim(),
+      email: values.email.trim(),
+      empresa: values.empresa.trim(),
+      empleados: values.empleados,
+      tipoOrganizacion: values.tipoOrganizacion,
+      mensaje: values.necesidad.trim(),
+      moduloInteres: defaultModule,
+    });
+    setLoading(false);
+    setSubmissionResult(result);
+    setSubmitted(true);
+
+    if (!result.deliveredViaAjax && result.mailtoUrl) {
+      window.location.href = result.mailtoUrl;
+    }
   };
 
   const handleReset = () => {
     setValues(INITIAL_FORM);
     setErrors({});
     setSubmitted(false);
+    setSubmissionResult(null);
     onOpenChange(false);
   };
 
@@ -117,12 +146,13 @@ export function DemoModal({ open, onOpenChange, defaultModule }: DemoModalProps)
                 <CheckCircle2 className="h-8 w-8" aria-hidden />
               </span>
               <h3 className="mt-4 text-xl font-bold text-ink">
-                ¡Solicitud recibida, {values.nombre.trim().split(" ")[0]}!
+                ¡Solicitud enviada, {values.nombre.trim().split(" ")[0]}!
               </h3>
               <p className="mt-2 text-sm text-ink-muted">
-                Hemos registrado tus datos. Te escribiremos a{" "}
+                Hemos enviado los datos de tu solicitud a{" "}
+                <span className="font-semibold text-ink">{CONTACT_EMAIL}</span> y te responderemos a{" "}
                 <span className="font-semibold text-ink">{values.email.trim()}</span> en menos de
-                24 horas para coordinar la demostración personalizada para{" "}
+                24 horas para coordinar la demostración de{" "}
                 <span className="font-semibold text-ink">{values.empresa.trim()}</span>.
               </p>
 
@@ -138,10 +168,20 @@ export function DemoModal({ open, onOpenChange, defaultModule }: DemoModalProps)
                 </ul>
               </div>
 
+              {submissionResult?.mailtoUrl && (
+                <a
+                  href={submissionResult.mailtoUrl}
+                  className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50/60 px-4 py-2.5 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-100"
+                >
+                  <Mail className="h-3.5 w-3.5" />
+                  Enviar también copia directa por correo ({CONTACT_EMAIL})
+                </a>
+              )}
+
               <Button
                 type="button"
                 onClick={handleReset}
-                className="mt-6 h-11 w-full rounded-xl bg-brand-500 font-semibold text-white hover:bg-brand-600"
+                className="mt-3 h-11 w-full rounded-xl bg-brand-500 font-semibold text-white hover:bg-brand-600"
               >
                 Cerrar ventana
               </Button>

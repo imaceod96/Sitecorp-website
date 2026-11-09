@@ -1,11 +1,16 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { ArrowRight, CheckCircle2, Mail, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Mail, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Reveal } from "./Reveal";
 import { Section } from "./Layout";
+import {
+  CONTACT_EMAIL,
+  sendDemoRequestEmail,
+  type DemoSubmissionResult,
+} from "@/config/contactConfig";
 
 interface FormState {
   nombre: string;
@@ -54,6 +59,7 @@ export function FinalCta() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submissionResult, setSubmissionResult] = useState<DemoSubmissionResult | null>(null);
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -63,7 +69,7 @@ export function FinalCta() {
     setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nextErrors = validate(values);
     setErrors(nextErrors);
@@ -72,10 +78,21 @@ export function FinalCta() {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 450);
+    const result = await sendDemoRequestEmail({
+      origen: "Sección de Contacto",
+      nombre: values.nombre.trim(),
+      email: values.email.trim(),
+      empresa: values.empresa.trim(),
+      empleados: values.empleados,
+      mensaje: values.mensaje.trim(),
+    });
+    setLoading(false);
+    setSubmissionResult(result);
+    setSubmitted(true);
+
+    if (!result.deliveredViaAjax && result.mailtoUrl) {
+      window.location.href = result.mailtoUrl;
+    }
   };
 
   const errorClass = (field: keyof FormState) =>
@@ -127,10 +144,10 @@ export function FinalCta() {
                     Contacto corporativo directo
                   </p>
                   <a
-                    href="mailto:hola@sitecorp.com"
+                    href={`mailto:${CONTACT_EMAIL}`}
                     className="text-sm font-bold text-white hover:text-teal-200"
                   >
-                    hola@sitecorp.com
+                    {CONTACT_EMAIL}
                   </a>
                 </div>
               </div>
@@ -149,20 +166,31 @@ export function FinalCta() {
                     Gracias, {values.nombre.trim().split(" ")[0]}.
                   </h3>
                   <p className="mt-2 text-xs leading-relaxed text-ink-muted sm:text-sm">
-                    Hemos registrado tu solicitud de demostración para{" "}
-                    <span className="font-semibold text-ink">{values.empresa.trim()}</span>. Nos
+                    Hemos enviado tu solicitud de demostración para{" "}
+                    <span className="font-semibold text-ink">{values.empresa.trim()}</span> a{" "}
+                    <span className="font-semibold text-ink">{CONTACT_EMAIL}</span>. Nos
                     pondremos en contacto a la dirección{" "}
                     <span className="font-semibold text-ink">{values.email.trim()}</span> en menos de
                     24 horas laborables.
                   </p>
+                  {submissionResult?.mailtoUrl && (
+                    <a
+                      href={submissionResult.mailtoUrl}
+                      className="mt-4 inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50/60 px-4 py-2 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-100"
+                    >
+                      <Mail className="h-3.5 w-3.5" />
+                      Enviar también copia directa por correo
+                    </a>
+                  )}
                   <Button
                     type="button"
                     variant="outline"
-                    className="mt-6 h-10 rounded-xl border-brand-200 px-5 text-xs font-semibold text-brand-700 hover:bg-brand-50"
+                    className="mt-3 h-10 rounded-xl border-brand-200 px-5 text-xs font-semibold text-brand-700 hover:bg-brand-50"
                     onClick={() => {
                       setValues(EMPTY_FORM);
                       setErrors({});
                       setSubmitted(false);
+                      setSubmissionResult(null);
                     }}
                   >
                     Enviar otra solicitud

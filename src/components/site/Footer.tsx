@@ -2,6 +2,7 @@ import { Linkedin, Mail, Twitter, Youtube, Settings2, Scale } from "lucide-react
 import { Container } from "./Layout";
 import { Logo } from "./Logo";
 import type { LegalTabId } from "./LegalModal";
+import { CONTACT_EMAIL } from "@/config/contactConfig";
 
 interface FooterProps {
   onRequestDemo?: () => void;
@@ -125,10 +126,10 @@ export function Footer({ onRequestDemo, onOpenLegal }: FooterProps) {
                   Consultas y soporte corporativo
                 </p>
                 <a
-                  href="mailto:hola@sitecorp.com"
+                  href={`mailto:${CONTACT_EMAIL}`}
                   className="text-xs font-semibold text-white hover:text-teal-300"
                 >
-                  hola@sitecorp.com
+                  {CONTACT_EMAIL}
                 </a>
               </div>
             </div>
