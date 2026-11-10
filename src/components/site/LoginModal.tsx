@@ -18,6 +18,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { APP_BASE_URL, DIRECT_LOGIN_URL } from "@/config/authConfig";
+
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -35,9 +37,9 @@ interface ServerConfig {
 const STORAGE_KEY = "sitecorp_app_server_config_v1";
 
 const DEFAULT_CONFIG: ServerConfig = {
-  enabled: Boolean(import.meta.env.VITE_SITECORP_APP_URL),
-  baseUrl: import.meta.env.VITE_SITECORP_APP_URL || "http://localhost:8080",
-  loginPath: "/api/auth/login",
+  enabled: true,
+  baseUrl: APP_BASE_URL,
+  loginPath: "/login",
   mode: "redirect",
 };
 
